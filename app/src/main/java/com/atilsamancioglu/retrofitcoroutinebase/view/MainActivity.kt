@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atilsamancioglu.retrofitcoroutinebase.R
 import com.atilsamancioglu.retrofitcoroutinebase.adapter.RecyclerViewAdapter
+import com.atilsamancioglu.retrofitcoroutinebase.databinding.ActivityMainBinding
 import com.atilsamancioglu.retrofitcoroutinebase.model.CryptoModel
 import com.atilsamancioglu.retrofitcoroutinebase.service.CryptoAPI
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(),RecyclerViewAdapter.Listener {
 
+
+    private lateinit var binding: ActivityMainBinding
     private val BASE_URL = "https://raw.githubusercontent.com/"
     private var cryptoModels: ArrayList<CryptoModel>? = null
     private var recyclerViewAdapter : RecyclerViewAdapter? = null
@@ -25,12 +27,14 @@ class MainActivity : AppCompatActivity(),RecyclerViewAdapter.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //RecyclerView
 
         val layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.layoutManager = layoutManager
 
         loadData()
 
@@ -60,7 +64,7 @@ class MainActivity : AppCompatActivity(),RecyclerViewAdapter.Listener {
                             cryptoModels = ArrayList(it)
                             cryptoModels?.let {
                                 recyclerViewAdapter = RecyclerViewAdapter(it,this@MainActivity)
-                                recyclerView.adapter = recyclerViewAdapter
+                                binding.recyclerView.adapter = recyclerViewAdapter
                             }
                         }
                     }
